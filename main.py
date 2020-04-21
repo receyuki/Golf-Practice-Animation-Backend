@@ -38,8 +38,11 @@ link = Transmitter()
 
 link.connect()
 
-while True:
-    msg = input("input message: ")
-    link.send(msg)
+try:
+    while True:
+        msg = input("input message: ")
+        link.send(msg)
+except EOFError:
+    pass
 
 link.close()
