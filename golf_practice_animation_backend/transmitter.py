@@ -22,6 +22,7 @@ class Transmitter:
         self.logger.debug("Bluetooth on")
 
         # display near by device
+        '''
         nearby_devices = bluetooth.discover_devices(lookup_names=True)
         self.logger.info("Found {} devices.".format(len(nearby_devices)))
 
@@ -31,6 +32,7 @@ class Transmitter:
                 self.logger.debug([addr, name])
             else:
                 self.logger.info("  {} - {}".format(addr, name))
+        '''
 
         port = 1
         # establish connection
@@ -52,6 +54,9 @@ class Transmitter:
         except bluetooth.btcommon.BluetoothError as e:
             self.logger.warning(e)
             self.client_sock, self.address = self.server_sock.accept()
+
+    def recv(self):
+        return self.client_sock.recv(1024)
 
     def close(self):
         self.client_sock.close()

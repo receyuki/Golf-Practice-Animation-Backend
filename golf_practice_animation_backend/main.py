@@ -1,14 +1,14 @@
 # -*- encoding:utf-8 -*-
 import sys
-import ascii
+from golf_practice_animation_backend import ascii
 import logging
-from transmitter import Transmitter
+from golf_practice_animation_backend.transmitter import Transmitter
 
 # create logger
 logger = logging.getLogger("server")
 logger.setLevel(logging.DEBUG)
 
-formatter =logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
 # create file handler
 fh = logging.FileHandler("server.log")
@@ -38,6 +38,12 @@ link = Transmitter()
 
 link.connect()
 
+while True:
+    msg = link.recv()
+    print("received [%s]" % msg.decode('utf-8'))
+
+
+"""
 try:
     while True:
         msg = input("input message: ")
@@ -46,3 +52,4 @@ except EOFError:
     pass
 
 link.close()
+"""
