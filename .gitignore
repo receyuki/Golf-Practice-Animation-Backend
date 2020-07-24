@@ -1,3 +1,4 @@
 # Project exclude paths
 /venv/
 test.py
+/golf_practice_animation_backend/driver.py

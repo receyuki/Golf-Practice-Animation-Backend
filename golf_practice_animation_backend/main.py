@@ -1,8 +1,14 @@
 # -*- encoding:utf-8 -*-
+__author__ = 'Zijie Yang'
+__filename__ = 'driver.py'
+__copyright__ = 'Copyright 2020, '
+__email__ = 'zijiey@student.unimelb.edu.au'
+
 import sys
 from golf_practice_animation_backend import ascii
 import logging
 from golf_practice_animation_backend.transmitter import Transmitter
+from gpiozero import MCP3204
 
 # create logger
 logger = logging.getLogger("server")
@@ -17,6 +23,8 @@ fh.setFormatter(formatter)
 
 # create console handler
 ch = logging.StreamHandler()
+
+# parameters
 if "-debug" in sys.argv:
     ch.setLevel(logging.DEBUG)
 else:
@@ -34,6 +42,15 @@ if "-doge" in sys.argv:
 else:
     print(ascii.ASCII_TITLE)
 
+# ADC driver
+# class gpiozero.MCP3204(channel=0, differential=False, max_voltage=3.3, **spi_args)
+radar0 = MCP3204(channel=0, differential=False, max_voltage=3.3)
+radar1 = MCP3204(channel=1, differential=False, max_voltage=3.3)
+radar2 = MCP3204(channel=2, differential=False, max_voltage=3.3)
+radar3 = MCP3204(channel=3, differential=False, max_voltage=3.3)
+
+#TODO test driver
+
 link = Transmitter()
 
 link.connect()
@@ -42,6 +59,7 @@ while True:
     msg = link.recv()
     print("received [%s]" % msg.decode('utf-8'))
 
+#TODO formal protocol
 
 """
 try:

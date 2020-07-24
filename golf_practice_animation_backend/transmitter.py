@@ -1,3 +1,9 @@
+# -*- encoding:utf-8 -*-
+__author__ = 'Zijie Yang'
+__filename__ = 'driver.py'
+__copyright__ = 'Copyright 2020, '
+__email__ = 'zijiey@student.unimelb.edu.au'
+
 import bluetooth
 import sys
 import logging
