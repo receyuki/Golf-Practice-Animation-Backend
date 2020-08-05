@@ -1,6 +1,6 @@
 # -*- encoding:utf-8 -*-
 __author__ = 'Zijie Yang'
-__filename__ = 'driver.py'
+__filename__ = 'main.py'
 __copyright__ = 'Copyright 2020, '
 __email__ = 'zijiey@student.unimelb.edu.au'
 
@@ -8,6 +8,7 @@ import sys
 from golf_practice_animation_backend import ascii
 import logging
 from golf_practice_animation_backend.transmitter import Transmitter
+from golf_practice_animation_backend.data import Data
 from gpiozero import MCP3204
 
 # create logger
@@ -44,16 +45,18 @@ else:
 
 # ADC driver
 # class gpiozero.MCP3204(channel=0, differential=False, max_voltage=3.3, **spi_args)
-radar0 = MCP3204(channel=0, differential=False, max_voltage=3.3)
-radar1 = MCP3204(channel=1, differential=False, max_voltage=3.3)
-radar2 = MCP3204(channel=2, differential=False, max_voltage=3.3)
-radar3 = MCP3204(channel=3, differential=False, max_voltage=3.3)
+#radar0 = MCP3204(channel=0, differential=False, max_voltage=3.3)
+#radar1 = MCP3204(channel=1, differential=False, max_voltage=3.3)
+#radar2 = MCP3204(channel=2, differential=False, max_voltage=3.3)
+#radar3 = MCP3204(channel=3, differential=False, max_voltage=3.3)
 
 #TODO test driver
 
 link = Transmitter()
 
 link.connect()
+
+testdata = Data.encode(10,20,30,40,50,[1,2,3],[4,5,6],[7,8,9])
 
 while True:
     msg = link.recv()

@@ -1,6 +1,6 @@
 # -*- encoding:utf-8 -*-
 __author__ = 'Zijie Yang'
-__filename__ = 'driver.py'
+__filename__ = 'transmitter.py'
 __copyright__ = 'Copyright 2020, '
 __email__ = 'zijiey@student.unimelb.edu.au'
 
