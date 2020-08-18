@@ -62,7 +62,7 @@ while True:
     msg = link.recv()
     print("received [%s]" % msg.decode('utf-8'))
 
-#TODO formal protocol
+#TODO bluetooth
 
 """
 try:
