@@ -36,3 +36,17 @@ class Data:
 
         return json.dumps(data)
 
+    def fragment(self, s, mtu = 200):
+        i = 0
+        subString = ""
+        fragmented = []
+        for c in s:
+            subString += c
+            i+=1
+            if i == mtu:
+                fragmented.append(subString)
+                i = 0
+                subString = ""
+        return fragmented
+
+#TODO logger and comments

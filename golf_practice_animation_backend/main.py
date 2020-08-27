@@ -54,8 +54,12 @@ else:
 #radar2 = MCP3204(channel=2, differential=False, max_voltage=3.3)
 #radar3 = MCP3204(channel=3, differential=False, max_voltage=3.3)
 
-testdata = Data()
-testdata.encode(10,20,30,40,50,[1,2,3],[4,5,6],[7,8,9])
+data = Data()
+data.encode(10,20,30,40,50,[1,2,3],[4,5,6],[7,8,9])
+
+test= "Python has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the form"
+
+ts = data.fragment(test)
 
 #TODO test driver
 
@@ -64,10 +68,12 @@ mainloop = GLib.MainLoop()
 link = Transmitter(mainloop)
 
 def test():
-    link.send(str(time.time()))
+    for e in ts:
+        link.send(e)
     return True
 
-GLib.timeout_add(100, test)
+GLib.timeout_add(1000, test)
+
 
 
 try:
