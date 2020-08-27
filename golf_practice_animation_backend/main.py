@@ -7,6 +7,9 @@ __email__ = 'zijiey@student.unimelb.edu.au'
 import sys
 from golf_practice_animation_backend import ascii
 import logging
+import time
+import dbus.mainloop.glib
+from gi.repository import GLib
 from golf_practice_animation_backend.transmitter import Transmitter
 from golf_practice_animation_backend.data import Data
 from gpiozero import MCP3204
@@ -41,7 +44,8 @@ logger.debug("The arguments are: %s", sys.argv[1:])
 if "-doge" in sys.argv:
     print(ascii.ASCII_DOGE)
 else:
-    print(ascii.ASCII_TITLE)
+    #print(ascii.ASCII_TITLE)
+    pass
 
 # ADC driver
 # class gpiozero.MCP3204(channel=0, differential=False, max_voltage=3.3, **spi_args)
@@ -50,27 +54,23 @@ else:
 #radar2 = MCP3204(channel=2, differential=False, max_voltage=3.3)
 #radar3 = MCP3204(channel=3, differential=False, max_voltage=3.3)
 
+testdata = Data()
+testdata.encode(10,20,30,40,50,[1,2,3],[4,5,6],[7,8,9])
+
 #TODO test driver
 
-link = Transmitter()
+mainloop = GLib.MainLoop()
 
-link.connect()
+link = Transmitter(mainloop)
 
-testdata = Data.encode(10,20,30,40,50,[1,2,3],[4,5,6],[7,8,9])
+def test():
+    link.send(str(time.time()))
+    return True
 
-while True:
-    msg = link.recv()
-    print("received [%s]" % msg.decode('utf-8'))
+GLib.timeout_add(100, test)
 
-#TODO bluetooth
 
-"""
 try:
-    while True:
-        msg = input("input message: ")
-        link.send(msg)
-except EOFError:
-    pass
-
-link.close()
-"""
+    mainloop.run()
+except KeyboardInterrupt:
+    mainloop.quit()
