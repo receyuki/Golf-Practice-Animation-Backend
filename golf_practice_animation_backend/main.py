@@ -44,37 +44,36 @@ logger.debug("The arguments are: %s", sys.argv[1:])
 if "-doge" in sys.argv:
     print(ascii.ASCII_DOGE)
 else:
-    #print(ascii.ASCII_TITLE)
+    # print(ascii.ASCII_TITLE)
     pass
 
 # ADC driver
 # class gpiozero.MCP3204(channel=0, differential=False, max_voltage=3.3, **spi_args)
-#radar0 = MCP3204(channel=0, differential=False, max_voltage=3.3)
-#radar1 = MCP3204(channel=1, differential=False, max_voltage=3.3)
-#radar2 = MCP3204(channel=2, differential=False, max_voltage=3.3)
-#radar3 = MCP3204(channel=3, differential=False, max_voltage=3.3)
+# radar0 = MCP3204(channel=0, differential=False, max_voltage=3.3)
+# radar1 = MCP3204(channel=1, differential=False, max_voltage=3.3)
+# radar2 = MCP3204(channel=2, differential=False, max_voltage=3.3)
+# radar3 = MCP3204(channel=3, differential=False, max_voltage=3.3)
 
 data = Data()
-data.encode(10,20,30,40,50,[1,2,3],[4,5,6],[7,8,9])
+#data.encode(10, 20, 30, 40, 50, [1, 2, 3], [4, 5, 6], [7, 8, 9])
 
-test= "Python has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the formPython has a different way of representing syntax and default values for function arguments. Default values indicate that the function argument will take that value if no argument value is passed during function call. The default value is assigned by using assignment(=) operator of the form"
-
-ts = data.fragment(test)
-
-#TODO test driver
+ts = data.fragment(data.testData())
+# print(ts)
+# TODO test driver
 
 mainloop = GLib.MainLoop()
 
 link = Transmitter(mainloop)
 
+
 def test():
     for e in ts:
+        print(e)
         link.send(e)
     return True
 
-GLib.timeout_add(1000, test)
 
-
+GLib.timeout_add(15000, test)
 
 try:
     mainloop.run()

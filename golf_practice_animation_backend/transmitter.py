@@ -32,7 +32,7 @@ class TxCharacteristic(Characteristic):
         self.notifying = False
         global send
         send = self
-        #GLib.io_add_watch(sys.stdin, GLib.IO_IN, self.on_console_input)
+        # GLib.io_add_watch(sys.stdin, GLib.IO_IN, self.on_console_input)
 
     def on_console_input(self, fd, condition):
         s = fd.readline()
@@ -113,8 +113,9 @@ class UartAdvertisement(Advertisement):
         self.add_local_name(LOCAL_NAME)
         self.include_tx_power = True
 
+
 class Transmitter:
-    #TODO logger and comments
+    # TODO logger and comments
     def __init__(self, loop):
         global mainloop
         dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
@@ -133,7 +134,7 @@ class Transmitter:
         app = UartApplication(bus)
         adv = UartAdvertisement(bus, 0)
 
-        #mainloop = GLib.MainLoop()
+        # mainloop = GLib.MainLoop()
         mainloop = loop
 
         service_manager.RegisterApplication(app.get_path(), {},
@@ -143,7 +144,6 @@ class Transmitter:
                                          reply_handler=register_ad_cb,
                                          error_handler=register_ad_error_cb)
 
-
         # GLib.timeout_add(100, self.test)
         #
         # try:
@@ -151,8 +151,7 @@ class Transmitter:
         # except KeyboardInterrupt:
         #    adv.Release()
 
-
-        #while True:
+        # while True:
         #    self.send(str(time.time()))
         #    print(time.time())
         #    time.sleep(2)
@@ -171,7 +170,7 @@ class Transmitter:
         global send
         value = []
         for c in s:
-            value.append(dbus.Byte(c.encode()))
+            value.append(dbus.Byte(c))
         send.PropertiesChanged(GATT_CHRC_IFACE, {'Value': value}, [])
-#if __name__ == '__main__':
+# if __name__ == '__main__':
 #    main()

@@ -6,7 +6,7 @@ __email__ = 'zijiey@student.unimelb.edu.au'
 
 import json
 import logging
-
+import gzip
 
 class Data:
 
@@ -36,17 +36,35 @@ class Data:
 
         return json.dumps(data)
 
-    def fragment(self, s, mtu = 200):
+    def fragment(self, b, mtu=200):
+        n = 0
         i = 0
-        subString = ""
+        subString = bytearray()
         fragmented = []
-        for c in s:
-            subString += c
-            i+=1
-            if i == mtu:
-                fragmented.append(subString)
-                i = 0
-                subString = ""
+        for c in b:
+            subString.append(c)
+            n += 1
+            if n == mtu:
+                header = bytearray("{0:03}".format(i).encode())
+                header.extend(subString)
+                fragmented.append(header)
+                # print(bytearray("{0:03}".format(i).encode()))
+
+                n = 0
+                subString = bytearray()
+                i += 1
+        if subString:
+            header = bytearray("{0:03}".format(i).encode())
+            header.extend(subString)
+            fragmented.append(header)
+
+        header = bytearray("{0:03}".format(i+1).encode())
+        header.extend("EOF".encode())
+        fragmented.append(header)
         return fragmented
 
-#TODO logger and comments
+    def testData(self):
+        with open('testData.json') as f:
+            data = gzip.compress(str(json.load(f)).encode())
+        return data
+# TODO logger and comments
