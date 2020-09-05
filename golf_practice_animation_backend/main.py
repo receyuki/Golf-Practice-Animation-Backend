@@ -56,16 +56,14 @@ else:
 # radar3 = MCP3204(channel=3, differential=False, max_voltage=3.3)
 
 data = Data()
-#data.encode(10, 20, 30, 40, 50, [1, 2, 3], [4, 5, 6], [7, 8, 9])
+# data.encode(10, 20, 30, 40, 50, [1, 2, 3], [4, 5, 6], [7, 8, 9])
 
 
+# ts = data.fragment(data.testData())
 
-
-#ts = data.fragment(data.testData())
-
-speed=111.7 * 1.609 * 0.278
-launchAngle=-1.9
-sideAngle=19.4
+speed = 111.7 * 1.609 * 0.278
+launchAngle = -1.9
+sideAngle = 19.4
 
 tra = Trajectory(speed, launchAngle, sideAngle)
 (carry, peak, x, y, z) = tra.trajectoryPrediction()

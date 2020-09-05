@@ -10,9 +10,9 @@ import dbus.service
 import array
 
 try:
-  from gi.repository import GObject  # python3
+    from gi.repository import GObject  # python3
 except ImportError:
-  import gobject as GObject  # python2
+    import gobject as GObject  # python2
 
 from random import randint
 
@@ -136,6 +136,7 @@ class Advertisement(dbus.service.Object):
     def Release(self):
         print('%s: Released!' % self.path)
 
+
 class TestAdvertisement(Advertisement):
 
     def __init__(self, bus, index):
@@ -199,6 +200,7 @@ def main():
                                      error_handler=register_ad_error_cb)
 
     mainloop.run()
+
 
 if __name__ == '__main__':
     main()

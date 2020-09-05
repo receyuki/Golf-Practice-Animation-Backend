@@ -79,7 +79,7 @@ class Trajectory():
         max_y_mp = max(y_mp)
         carry = math.sqrt(np.square(max_x_mp) + np.square(max_y_mp))
         height = m / (2 * k) * np.square(math.log(1 + math.exp(2 * trise * math.sqrt(k * g / m)))) / (
-                    4 * math.exp(2 * trise * math.sqrt(k * g / m)))
+                4 * math.exp(2 * trise * math.sqrt(k * g / m)))
         peak = height * 1.0936
 
         print("carry:%.2f" % carry)
@@ -98,7 +98,6 @@ class Trajectory():
         plt.xlabel('x')
         plt.ylabel('y')
         plt.show()
-
 
 # tra = Trajectory(111.7 * 1.609 * 0.278, -1.9, 19.4)
 # tra.trajectoryPrediction()
