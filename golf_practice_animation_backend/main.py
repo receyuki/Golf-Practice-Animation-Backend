@@ -12,6 +12,7 @@ import dbus.mainloop.glib
 from gi.repository import GLib
 from golf_practice_animation_backend.transmitter import Transmitter
 from golf_practice_animation_backend.data import Data
+from golf_practice_animation_backend.trajectorySimulation import Trajectory
 from gpiozero import MCP3204
 
 # create logger
@@ -57,7 +58,20 @@ else:
 data = Data()
 #data.encode(10, 20, 30, 40, 50, [1, 2, 3], [4, 5, 6], [7, 8, 9])
 
-ts = data.fragment(data.testData())
+
+
+
+#ts = data.fragment(data.testData())
+
+speed=111.7 * 1.609 * 0.278
+launchAngle=-1.9
+sideAngle=19.4
+
+tra = Trajectory(speed, launchAngle, sideAngle)
+(carry, peak, x, y, z) = tra.trajectoryPrediction()
+traj = data.encode(speed, sideAngle, launchAngle, carry, peak, x, y, z)
+trajt = data.fragment(data.compress(traj))
+
 # print(ts)
 # TODO test driver
 
@@ -67,13 +81,13 @@ link = Transmitter(mainloop)
 
 
 def test():
-    for e in ts:
+    for e in trajt:
         print(e)
         link.send(e)
     return True
 
 
-GLib.timeout_add(15000, test)
+GLib.timeout_add(20000, test)
 
 try:
     mainloop.run()

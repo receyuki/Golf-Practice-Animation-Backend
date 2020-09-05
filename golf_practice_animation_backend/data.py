@@ -8,6 +8,7 @@ import json
 import logging
 import gzip
 
+
 class Data:
 
     def __init__(self):
@@ -36,7 +37,7 @@ class Data:
 
         return json.dumps(data)
 
-    def fragment(self, b, mtu=200):
+    def fragment(self, b, mtu=500):
         n = 0
         i = 0
         subString = bytearray()
@@ -58,13 +59,17 @@ class Data:
             header.extend(subString)
             fragmented.append(header)
 
-        header = bytearray("{0:03}".format(i+1).encode())
+        header = bytearray("{0:03}".format(i + 1).encode())
         header.extend("EOF".encode())
         fragmented.append(header)
         return fragmented
 
+    def compress(self, str):
+        return gzip.compress(str.encode())
+
     def testData(self):
         with open('testData.json') as f:
             data = gzip.compress(str(json.load(f)).encode())
+            # data = str(json.load(f)).encode()
         return data
 # TODO logger and comments
