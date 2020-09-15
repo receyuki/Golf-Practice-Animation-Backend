@@ -144,6 +144,7 @@ class Transmitter:
                                          reply_handler=register_ad_cb,
                                          error_handler=register_ad_error_cb)
 
+
         # GLib.timeout_add(100, self.test)
         #
         # try:
