@@ -4,9 +4,9 @@ __filename__ = 'transmitter.py'
 __copyright__ = 'Copyright 2020, '
 __email__ = 'zijiey@student.unimelb.edu.au'
 
-import sys
+# import sys
 import dbus, dbus.mainloop.glib
-from gi.repository import GLib
+# from gi.repository import GLib
 from golf_practice_animation_backend.advertisement import Advertisement
 from golf_practice_animation_backend.advertisement import register_ad_cb, register_ad_error_cb
 from golf_practice_animation_backend.gatt_server import Service, Characteristic

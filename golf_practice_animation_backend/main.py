@@ -57,8 +57,6 @@ else:
 
 data = Data()
 # data.encode(10, 20, 30, 40, 50, [1, 2, 3], [4, 5, 6], [7, 8, 9])
-
-
 # ts = data.fragment(data.testData())
 
 speed = 111.7 * 1.609 * 0.278
@@ -82,10 +80,10 @@ def test():
     for e in trajt:
         print(e)
         link.send(e)
-    return True
+    return False
 
 
-GLib.timeout_add(20000, test)
+GLib.timeout_add(2000, test)
 
 try:
     mainloop.run()

@@ -6,10 +6,11 @@ import dbus.mainloop.glib
 import dbus.service
 
 import array
+
 try:
-  from gi.repository import GObject
+    from gi.repository import GObject
 except ImportError:
-  import gobject as GObject
+    import gobject as GObject
 import sys
 
 from random import randint
@@ -18,24 +19,29 @@ mainloop = None
 
 BLUEZ_SERVICE_NAME = 'org.bluez'
 GATT_MANAGER_IFACE = 'org.bluez.GattManager1'
-DBUS_OM_IFACE =      'org.freedesktop.DBus.ObjectManager'
-DBUS_PROP_IFACE =    'org.freedesktop.DBus.Properties'
+DBUS_OM_IFACE = 'org.freedesktop.DBus.ObjectManager'
+DBUS_PROP_IFACE = 'org.freedesktop.DBus.Properties'
 
 GATT_SERVICE_IFACE = 'org.bluez.GattService1'
-GATT_CHRC_IFACE =    'org.bluez.GattCharacteristic1'
-GATT_DESC_IFACE =    'org.bluez.GattDescriptor1'
+GATT_CHRC_IFACE = 'org.bluez.GattCharacteristic1'
+GATT_DESC_IFACE = 'org.bluez.GattDescriptor1'
+
 
 class InvalidArgsException(dbus.exceptions.DBusException):
     _dbus_error_name = 'org.freedesktop.DBus.Error.InvalidArgs'
 
+
 class NotSupportedException(dbus.exceptions.DBusException):
     _dbus_error_name = 'org.bluez.Error.NotSupported'
+
 
 class NotPermittedException(dbus.exceptions.DBusException):
     _dbus_error_name = 'org.bluez.Error.NotPermitted'
 
+
 class InvalidValueLengthException(dbus.exceptions.DBusException):
     _dbus_error_name = 'org.bluez.Error.InvalidValueLength'
+
 
 class FailedException(dbus.exceptions.DBusException):
     _dbus_error_name = 'org.bluez.Error.Failed'
@@ -45,6 +51,7 @@ class Application(dbus.service.Object):
     """
     org.bluez.GattApplication1 interface implementation
     """
+
     def __init__(self, bus):
         self.path = '/'
         self.services = []
@@ -92,13 +99,13 @@ class Service(dbus.service.Object):
 
     def get_properties(self):
         return {
-                GATT_SERVICE_IFACE: {
-                        'UUID': self.uuid,
-                        'Primary': self.primary,
-                        'Characteristics': dbus.Array(
-                                self.get_characteristic_paths(),
-                                signature='o')
-                }
+            GATT_SERVICE_IFACE: {
+                'UUID': self.uuid,
+                'Primary': self.primary,
+                'Characteristics': dbus.Array(
+                    self.get_characteristic_paths(),
+                    signature='o')
+            }
         }
 
     def get_path(self):
@@ -130,6 +137,7 @@ class Characteristic(dbus.service.Object):
     """
     org.bluez.GattCharacteristic1 interface implementation
     """
+
     def __init__(self, bus, index, uuid, flags, service):
         self.path = service.path + '/char' + str(index)
         self.bus = bus
@@ -141,14 +149,14 @@ class Characteristic(dbus.service.Object):
 
     def get_properties(self):
         return {
-                GATT_CHRC_IFACE: {
-                        'Service': self.service.get_path(),
-                        'UUID': self.uuid,
-                        'Flags': self.flags,
-                        'Descriptors': dbus.Array(
-                                self.get_descriptor_paths(),
-                                signature='o')
-                }
+            GATT_CHRC_IFACE: {
+                'Service': self.service.get_path(),
+                'UUID': self.uuid,
+                'Flags': self.flags,
+                'Descriptors': dbus.Array(
+                    self.get_descriptor_paths(),
+                    signature='o')
+            }
         }
 
     def get_path(self):
@@ -176,8 +184,8 @@ class Characteristic(dbus.service.Object):
         return self.get_properties()[GATT_CHRC_IFACE]
 
     @dbus.service.method(GATT_CHRC_IFACE,
-                        in_signature='a{sv}',
-                        out_signature='ay')
+                         in_signature='a{sv}',
+                         out_signature='ay')
     def ReadValue(self, options):
         print('Default ReadValue called, returning error')
         raise NotSupportedException()
@@ -207,6 +215,7 @@ class Descriptor(dbus.service.Object):
     """
     org.bluez.GattDescriptor1 interface implementation
     """
+
     def __init__(self, bus, index, uuid, flags, characteristic):
         self.path = characteristic.path + '/desc' + str(index)
         self.bus = bus
@@ -217,11 +226,11 @@ class Descriptor(dbus.service.Object):
 
     def get_properties(self):
         return {
-                GATT_DESC_IFACE: {
-                        'Characteristic': self.chrc.get_path(),
-                        'UUID': self.uuid,
-                        'Flags': self.flags,
-                }
+            GATT_DESC_IFACE: {
+                'Characteristic': self.chrc.get_path(),
+                'UUID': self.uuid,
+                'Flags': self.flags,
+            }
         }
 
     def get_path(self):
@@ -237,10 +246,10 @@ class Descriptor(dbus.service.Object):
         return self.get_properties()[GATT_DESC_IFACE]
 
     @dbus.service.method(GATT_DESC_IFACE,
-                        in_signature='a{sv}',
-                        out_signature='ay')
+                         in_signature='a{sv}',
+                         out_signature='ay')
     def ReadValue(self, options):
-        print ('Default ReadValue called, returning error')
+        print('Default ReadValue called, returning error')
         raise NotSupportedException()
 
     @dbus.service.method(GATT_DESC_IFACE, in_signature='aya{sv}')
@@ -270,10 +279,10 @@ class HeartRateMeasurementChrc(Characteristic):
 
     def __init__(self, bus, index, service):
         Characteristic.__init__(
-                self, bus, index,
-                self.HR_MSRMT_UUID,
-                ['notify'],
-                service)
+            self, bus, index,
+            self.HR_MSRMT_UUID,
+            ['notify'],
+            service)
         self.notifying = False
         self.hr_ee_count = 0
 
@@ -289,12 +298,12 @@ class HeartRateMeasurementChrc(Characteristic):
             value.append(dbus.Byte((self.service.energy_expended >> 8) & 0xff))
 
         self.service.energy_expended = \
-                min(0xffff, self.service.energy_expended + 1)
+            min(0xffff, self.service.energy_expended + 1)
         self.hr_ee_count += 1
 
         print('Updating value: ' + repr(value))
 
-        self.PropertiesChanged(GATT_CHRC_IFACE, { 'Value': value }, [])
+        self.PropertiesChanged(GATT_CHRC_IFACE, {'Value': value}, [])
 
         return self.notifying
 
@@ -328,24 +337,25 @@ class BodySensorLocationChrc(Characteristic):
 
     def __init__(self, bus, index, service):
         Characteristic.__init__(
-                self, bus, index,
-                self.BODY_SNSR_LOC_UUID,
-                ['read'],
-                service)
+            self, bus, index,
+            self.BODY_SNSR_LOC_UUID,
+            ['read'],
+            service)
 
     def ReadValue(self, options):
         # Return 'Chest' as the sensor location.
-        return [ 0x01 ]
+        return [0x01]
+
 
 class HeartRateControlPointChrc(Characteristic):
     HR_CTRL_PT_UUID = '00002a39-0000-1000-8000-00805f9b34fb'
 
     def __init__(self, bus, index, service):
         Characteristic.__init__(
-                self, bus, index,
-                self.HR_CTRL_PT_UUID,
-                ['write'],
-                service)
+            self, bus, index,
+            self.HR_CTRL_PT_UUID,
+            ['write'],
+            service)
 
     def WriteValue(self, value, options):
         print('Heart Rate Control Point WriteValue called')
@@ -385,10 +395,10 @@ class BatteryLevelCharacteristic(Characteristic):
 
     def __init__(self, bus, index, service):
         Characteristic.__init__(
-                self, bus, index,
-                self.BATTERY_LVL_UUID,
-                ['read', 'notify'],
-                service)
+            self, bus, index,
+            self.BATTERY_LVL_UUID,
+            ['read', 'notify'],
+            service)
         self.notifying = False
         self.battery_lvl = 100
         GObject.timeout_add(5000, self.drain_battery)
@@ -397,8 +407,8 @@ class BatteryLevelCharacteristic(Characteristic):
         if not self.notifying:
             return
         self.PropertiesChanged(
-                GATT_CHRC_IFACE,
-                { 'Value': [dbus.Byte(self.battery_lvl)] }, [])
+            GATT_CHRC_IFACE,
+            {'Value': [dbus.Byte(self.battery_lvl)]}, [])
 
     def drain_battery(self):
         if not self.notifying:
@@ -445,6 +455,7 @@ class TestService(Service):
         self.add_characteristic(TestEncryptCharacteristic(bus, 1, self))
         self.add_characteristic(TestSecureCharacteristic(bus, 2, self))
 
+
 class TestCharacteristic(Characteristic):
     """
     Dummy test characteristic. Allows writing arbitrary bytes to its value, and
@@ -455,14 +466,14 @@ class TestCharacteristic(Characteristic):
 
     def __init__(self, bus, index, service):
         Characteristic.__init__(
-                self, bus, index,
-                self.TEST_CHRC_UUID,
-                ['read', 'write', 'writable-auxiliaries'],
-                service)
+            self, bus, index,
+            self.TEST_CHRC_UUID,
+            ['read', 'write', 'writable-auxiliaries'],
+            service)
         self.value = []
         self.add_descriptor(TestDescriptor(bus, 0, self))
         self.add_descriptor(
-                CharacteristicUserDescriptionDescriptor(bus, 1, self))
+            CharacteristicUserDescriptionDescriptor(bus, 1, self))
 
     def ReadValue(self, options):
         print('TestCharacteristic Read: ' + repr(self.value))
@@ -482,14 +493,14 @@ class TestDescriptor(Descriptor):
 
     def __init__(self, bus, index, characteristic):
         Descriptor.__init__(
-                self, bus, index,
-                self.TEST_DESC_UUID,
-                ['read', 'write'],
-                characteristic)
+            self, bus, index,
+            self.TEST_DESC_UUID,
+            ['read', 'write'],
+            characteristic)
 
     def ReadValue(self, options):
         return [
-                dbus.Byte('T'), dbus.Byte('e'), dbus.Byte('s'), dbus.Byte('t')
+            dbus.Byte('T'), dbus.Byte('e'), dbus.Byte('s'), dbus.Byte('t')
         ]
 
 
@@ -505,10 +516,10 @@ class CharacteristicUserDescriptionDescriptor(Descriptor):
         self.value = array.array('B', b'This is a characteristic for testing')
         self.value = self.value.tolist()
         Descriptor.__init__(
-                self, bus, index,
-                self.CUD_UUID,
-                ['read', 'write'],
-                characteristic)
+            self, bus, index,
+            self.CUD_UUID,
+            ['read', 'write'],
+            characteristic)
 
     def ReadValue(self, options):
         return self.value
@@ -517,6 +528,7 @@ class CharacteristicUserDescriptionDescriptor(Descriptor):
         if not self.writable:
             raise NotPermittedException()
         self.value = value
+
 
 class TestEncryptCharacteristic(Characteristic):
     """
@@ -527,14 +539,14 @@ class TestEncryptCharacteristic(Characteristic):
 
     def __init__(self, bus, index, service):
         Characteristic.__init__(
-                self, bus, index,
-                self.TEST_CHRC_UUID,
-                ['encrypt-read', 'encrypt-write'],
-                service)
+            self, bus, index,
+            self.TEST_CHRC_UUID,
+            ['encrypt-read', 'encrypt-write'],
+            service)
         self.value = []
         self.add_descriptor(TestEncryptDescriptor(bus, 2, self))
         self.add_descriptor(
-                CharacteristicUserDescriptionDescriptor(bus, 3, self))
+            CharacteristicUserDescriptionDescriptor(bus, 3, self))
 
     def ReadValue(self, options):
         print('TestEncryptCharacteristic Read: ' + repr(self.value))
@@ -543,6 +555,7 @@ class TestEncryptCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         print('TestEncryptCharacteristic Write: ' + repr(value))
         self.value = value
+
 
 class TestEncryptDescriptor(Descriptor):
     """
@@ -553,14 +566,14 @@ class TestEncryptDescriptor(Descriptor):
 
     def __init__(self, bus, index, characteristic):
         Descriptor.__init__(
-                self, bus, index,
-                self.TEST_DESC_UUID,
-                ['encrypt-read', 'encrypt-write'],
-                characteristic)
+            self, bus, index,
+            self.TEST_DESC_UUID,
+            ['encrypt-read', 'encrypt-write'],
+            characteristic)
 
     def ReadValue(self, options):
         return [
-                dbus.Byte('T'), dbus.Byte('e'), dbus.Byte('s'), dbus.Byte('t')
+            dbus.Byte('T'), dbus.Byte('e'), dbus.Byte('s'), dbus.Byte('t')
         ]
 
 
@@ -573,14 +586,14 @@ class TestSecureCharacteristic(Characteristic):
 
     def __init__(self, bus, index, service):
         Characteristic.__init__(
-                self, bus, index,
-                self.TEST_CHRC_UUID,
-                ['secure-read', 'secure-write'],
-                service)
+            self, bus, index,
+            self.TEST_CHRC_UUID,
+            ['secure-read', 'secure-write'],
+            service)
         self.value = []
         self.add_descriptor(TestSecureDescriptor(bus, 2, self))
         self.add_descriptor(
-                CharacteristicUserDescriptionDescriptor(bus, 3, self))
+            CharacteristicUserDescriptionDescriptor(bus, 3, self))
 
     def ReadValue(self, options):
         print('TestSecureCharacteristic Read: ' + repr(self.value))
@@ -600,15 +613,16 @@ class TestSecureDescriptor(Descriptor):
 
     def __init__(self, bus, index, characteristic):
         Descriptor.__init__(
-                self, bus, index,
-                self.TEST_DESC_UUID,
-                ['secure-read', 'secure-write'],
-                characteristic)
+            self, bus, index,
+            self.TEST_DESC_UUID,
+            ['secure-read', 'secure-write'],
+            characteristic)
 
     def ReadValue(self, options):
         return [
-                dbus.Byte('T'), dbus.Byte('e'), dbus.Byte('s'), dbus.Byte('t')
+            dbus.Byte('T'), dbus.Byte('e'), dbus.Byte('s'), dbus.Byte('t')
         ]
+
 
 def register_app_cb():
     print('GATT application registered')
@@ -630,6 +644,7 @@ def find_adapter(bus):
 
     return None
 
+
 def main():
     global mainloop
 
@@ -643,8 +658,8 @@ def main():
         return
 
     service_manager = dbus.Interface(
-            bus.get_object(BLUEZ_SERVICE_NAME, adapter),
-            GATT_MANAGER_IFACE)
+        bus.get_object(BLUEZ_SERVICE_NAME, adapter),
+        GATT_MANAGER_IFACE)
 
     app = Application(bus)
 
@@ -653,10 +668,11 @@ def main():
     print('Registering GATT application...')
 
     service_manager.RegisterApplication(app.get_path(), {},
-                                    reply_handler=register_app_cb,
-                                    error_handler=register_app_error_cb)
+                                        reply_handler=register_app_cb,
+                                        error_handler=register_app_error_cb)
 
     mainloop.run()
+
 
 if __name__ == '__main__':
     main()
