@@ -60,12 +60,13 @@ data = Data()
 # ts = data.fragment(data.testData())
 
 speed = 111.7 * 1.609 * 0.278
-launchAngle = -1.9
-sideAngle = 19.4
+sideAngle = -1.9
+launchAngle = 19.4
+verticalScale = 2
 
-tra = Trajectory(speed, launchAngle, sideAngle)
-(carry, peak, x, y, z) = tra.trajectoryPrediction()
-traj = data.encode(speed, sideAngle, launchAngle, carry, peak, x, y, z)
+tra = Trajectory(speed, sideAngle, launchAngle)
+(carry, peak, x, y, z) = tra.trajectoryPrediction(verticalScale)
+traj = data.encode(speed, launchAngle, sideAngle, carry, peak, x, y, z)
 trajt = data.fragment(data.compress(traj))
 
 # print(ts)
@@ -80,10 +81,10 @@ def test():
     for e in trajt:
         print(e)
         link.send(e)
-    return False
+    return True
 
 
-GLib.timeout_add(2000, test)
+GLib.timeout_add(13000, test)
 
 try:
     mainloop.run()
