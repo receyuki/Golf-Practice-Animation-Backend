@@ -5,16 +5,21 @@ __copyright__ = 'Copyright 2020, '
 __email__ = 'zijiey@student.unimelb.edu.au'
 
 import sys
-from golf_practice_animation_backend import ascii
+import ascii
 import logging
 import time
 import dbus.mainloop.glib
 from gi.repository import GLib
-from golf_practice_animation_backend.transmitter import Transmitter
-from golf_practice_animation_backend.data import Data
-from golf_practice_animation_backend.trajectorySimulation import Trajectory
+from transmitter import Transmitter
+from data import Data
+from trajectorySimulation import Trajectory
 from gpiozero import MCP3204
+from ctypes import *
 
+dataReader = CDLL('./dataReader.so')
+dataReader.test()
+
+exit()
 # create logger
 logger = logging.getLogger("server")
 logger.setLevel(logging.DEBUG)

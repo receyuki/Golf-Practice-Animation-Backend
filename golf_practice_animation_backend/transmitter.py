@@ -7,10 +7,10 @@ __email__ = 'zijiey@student.unimelb.edu.au'
 # import sys
 import dbus, dbus.mainloop.glib
 # from gi.repository import GLib
-from golf_practice_animation_backend.advertisement import Advertisement
-from golf_practice_animation_backend.advertisement import register_ad_cb, register_ad_error_cb
-from golf_practice_animation_backend.gatt_server import Service, Characteristic
-from golf_practice_animation_backend.gatt_server import register_app_cb, register_app_error_cb
+from advertisement import Advertisement
+from advertisement import register_ad_cb, register_ad_error_cb
+from gatt_server import Service, Characteristic
+from gatt_server import register_app_cb, register_app_error_cb
 
 BLUEZ_SERVICE_NAME = 'org.bluez'
 DBUS_OM_IFACE = 'org.freedesktop.DBus.ObjectManager'
