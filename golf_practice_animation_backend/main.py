@@ -9,17 +9,15 @@ import ascii
 import logging
 import time
 import dbus.mainloop.glib
+import ctypes
+import numpy as np
+
 from gi.repository import GLib
 from transmitter import Transmitter
 from data import Data
 from trajectorySimulation import Trajectory
 from gpiozero import MCP3204
-from ctypes import *
 
-dataReader = CDLL('./dataReader.so')
-dataReader.test()
-
-exit()
 # create logger
 logger = logging.getLogger("server")
 logger.setLevel(logging.DEBUG)
@@ -53,12 +51,24 @@ else:
     # print(ascii.ASCII_TITLE)
     pass
 
-# ADC driver
-# class gpiozero.MCP3204(channel=0, differential=False, max_voltage=3.3, **spi_args)
-# radar0 = MCP3204(channel=0, differential=False, max_voltage=3.3)
-# radar1 = MCP3204(channel=1, differential=False, max_voltage=3.3)
-# radar2 = MCP3204(channel=2, differential=False, max_voltage=3.3)
-# radar3 = MCP3204(channel=3, differential=False, max_voltage=3.3)
+# initialize ctype
+dataReader = ctypes.CDLL('./dataReader.so')
+dataReader.detect.argtypes = [ctypes.POINTER(ctypes.c_double), ctypes.c_double, ctypes.c_double, ctypes.c_int]
+channel = 4
+size = 100
+dataType = ((ctypes.c_double * size) * channel)
+dataSet = np.zeros((100,4), dtype='double')
+dataSetC = dataSet.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
+
+# sampling
+if dataReader.detect(dataSetC, ctypes.c_double(100), ctypes.c_double(100), ctypes.c_int(size)) == 1:
+    print("Sampling success")
+
+
+print(dataSet)
+
+exit()
+
 
 data = Data()
 # data.encode(10, 20, 30, 40, 50, [1, 2, 3], [4, 5, 6], [7, 8, 9])
