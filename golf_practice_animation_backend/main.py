@@ -16,6 +16,7 @@ from gi.repository import GLib
 from transmitter import Transmitter
 from data import Data
 from trajectorySimulation import Trajectory
+from adcConverter import ADC
 from gpiozero import MCP3204
 
 # create logger
@@ -69,6 +70,21 @@ else:
 #
 # exit()
 
+a1 = [1, 3, 2, 4, 5, 6, 8, 7]
+a2 = [4, 5, 6, 8, 7, 9, 11, 10]
+a3 = [1, 3, 2, 4, 5, 6, 8, 7]
+a4 = [4, 5, 6, 8, 7, 9, 11, 10]
+a1 = [element * 10 for element in a1]
+a1 = [element * 10 for element in a1]
+a1 = [element * 10 for element in a1]
+a1 = [element * 10 for element in a1]
+
+dataSet = np.random.randint(1024, size=(10, 4))
+
+test = ADC(dataSet)
+#[velocity, azimuthin, elevation] = test.convert()
+(velocity, azimuthin, elevation) = test.convert()
+exit()
 
 data = Data()
 # data.encode(10, 20, 30, 40, 50, [1, 2, 3], [4, 5, 6], [7, 8, 9])
@@ -83,8 +99,6 @@ tra = Trajectory(speed, sideAngle, launchAngle)
 (carry, peak, x, y, z) = tra.trajectoryPrediction(verticalScale)
 traj = data.encode(speed, launchAngle, sideAngle, carry, peak, x, y, z)
 trajt = data.fragment(data.compress(traj))
-
-
 
 # print(ts)
 
@@ -106,4 +120,3 @@ try:
     mainloop.run()
 except KeyboardInterrupt:
     mainloop.quit()
-
