@@ -24,7 +24,6 @@ UART_TX_CHARACTERISTIC_UUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e'
 LOCAL_NAME = 'Golf-Practice-Animation'
 mainloop = None
 
-
 class TxCharacteristic(Characteristic):
     def __init__(self, bus, index, service):
         Characteristic.__init__(self, bus, index, UART_TX_CHARACTERISTIC_UUID,

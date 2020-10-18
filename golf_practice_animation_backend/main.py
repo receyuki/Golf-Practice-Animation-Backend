@@ -51,23 +51,23 @@ else:
     # print(ascii.ASCII_TITLE)
     pass
 
-# initialize ctype
-dataReader = ctypes.CDLL('./dataReader.so')
-dataReader.detect.argtypes = [ctypes.POINTER(ctypes.c_double), ctypes.c_double, ctypes.c_double, ctypes.c_int]
-channel = 4
-size = 100
-dataType = ((ctypes.c_double * size) * channel)
-dataSet = np.zeros((100,4), dtype='double')
-dataSetC = dataSet.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
-
-# sampling
-if dataReader.detect(dataSetC, ctypes.c_double(100), ctypes.c_double(100), ctypes.c_int(size)) == 1:
-    print("Sampling success")
-
-
-print(dataSet)
-
-exit()
+# # initialize ctype
+# dataReader = ctypes.CDLL('./dataReader.so')
+# dataReader.detect.argtypes = [ctypes.POINTER(ctypes.c_double), ctypes.c_double, ctypes.c_double, ctypes.c_int]
+# channel = 4
+# size = 100
+# dataType = ((ctypes.c_double * size) * channel)
+# dataSet = np.zeros((100,4), dtype='double')
+# dataSetC = dataSet.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
+#
+# # sampling
+# if dataReader.detect(dataSetC, ctypes.c_double(100), ctypes.c_double(100), ctypes.c_int(size)) == 1:
+#     print("Sampling success")
+#
+#
+# print(dataSet)
+#
+# exit()
 
 
 data = Data()
@@ -84,8 +84,9 @@ tra = Trajectory(speed, sideAngle, launchAngle)
 traj = data.encode(speed, launchAngle, sideAngle, carry, peak, x, y, z)
 trajt = data.fragment(data.compress(traj))
 
+
+
 # print(ts)
-# TODO test driver
 
 mainloop = GLib.MainLoop()
 
