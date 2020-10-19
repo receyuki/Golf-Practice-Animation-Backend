@@ -74,25 +74,19 @@ class ADC():
 
     def InitialValue(self):
         c = 3*10**8
-        d = 0.00775
-        ft = 10.525*10**9
-        fs = 200000
+        d = 0.06
+        ft = 24*10**9
         wavelength = c/ft
         fd = self.f1 - ft
         velocity = wavelength*fd/2
-        azimuthin = math.asin(wavelength*self.Phase_azimuthin/(2*math.pi*d)) 
-        elevation = math.asin(wavelength*self.Phase_elevation/(2*math.pi*d))
+        azimuthin = math.asin(wavelength*self.Phase_azimuthin/(2*math.pi*d)) / math.pi*180 
+        elevation = math.asin(wavelength*self.Phase_elevation/(2*math.pi*d)) / math.pi*180
 
         print("velocity:%.2f"%velocity)
         print("azimuthin:%.2f"%azimuthin)
         print("elevation:%.2f"%elevation)
         return velocity,azimuthin,elevation
     
-a1 = [1,3,2,4,5,6,8,7]
-a2 = [4,5,6,8,7,9,11,10]
-a3 = [1,3,2,4,5,6,8,7]
-a4 = [4,5,6,8,7,9,11,10]
-
 test = ADC([b'0000', b'0011', b'0010', b'0100', b'0101', b'0110', b'1000', b'0111'],[b'0100', b'0101', b'0110', b'1000', b'0111',b'1001',b'1011',b'1010'],
            [b'0000', b'0011', b'0010', b'0100', b'0101', b'0110', b'1000', b'0111'],[b'0100', b'0101', b'0110', b'1000', b'0111',b'1001',b'1011',b'1010'])
 test.Bin2Int()
