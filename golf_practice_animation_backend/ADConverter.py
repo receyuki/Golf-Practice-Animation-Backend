@@ -74,7 +74,7 @@ class ADC():
 
     def InitialValue(self):
         c = 3*10**8
-        d = 0.06
+        d = 0.006
         ft = 24*10**9
         wavelength = c/ft
         fd = self.f1 - ft
