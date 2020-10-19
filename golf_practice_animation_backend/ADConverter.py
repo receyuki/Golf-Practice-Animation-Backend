@@ -63,7 +63,7 @@ class ADC():
                 self.peak4.append(n)
         count4 = len(self.peak4)
 
-        fs = 200000
+        fs = 20000
         T1 = (self.peak1[1] - self.peak1[0]) * (1/fs)
         T2 = (self.peak2[1] - self.peak2[0]) * (1/fs)
         T3 = (self.peak3[1] - self.peak3[0]) * (1/fs)
