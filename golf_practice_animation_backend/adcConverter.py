@@ -70,12 +70,14 @@ class ADC:
                 self.peak4.append(n)
         count4 = len(self.peak4)
 
-        fs = 200000
+        # fs = 200000
+        fs = 100000000000
         T1 = (self.peak1[1] - self.peak1[0]) * (1 / fs)
         T2 = (self.peak2[1] - self.peak2[0]) * (1 / fs)
         T3 = (self.peak3[1] - self.peak3[0]) * (1 / fs)
         T4 = (self.peak4[1] - self.peak4[0]) * (1 / fs)
         self.f1 = 1 / T1
+        print(self.f1)
         self.Phase_azimuthin = (abs(self.peak1[0] - self.peak2[0]) / fs / T1) * 2 * math.pi
         self.Phase_elevation = (abs(self.peak3[0] - self.peak4[0]) / fs / T3) * 2 * math.pi
 
