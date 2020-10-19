@@ -76,8 +76,8 @@ class ADC:
         T2 = (self.peak2[1] - self.peak2[0]) * (1 / fs)
         T3 = (self.peak3[1] - self.peak3[0]) * (1 / fs)
         T4 = (self.peak4[1] - self.peak4[0]) * (1 / fs)
-        self.f1 = 1 / T1
-        print(self.f1)
+        self.fd = 1 / T1
+        print(self.fd)
         self.Phase_azimuthin = (abs(self.peak1[0] - self.peak2[0]) / fs / T1) * 2 * math.pi
         self.Phase_elevation = (abs(self.peak3[0] - self.peak4[0]) / fs / T3) * 2 * math.pi
 
@@ -86,8 +86,7 @@ class ADC:
         d = 0.006
         ft = 24*10**9
         wavelength = c / ft
-        fd = self.f1 - ft
-        velocity = wavelength * fd / 2
+        velocity = wavelength * self.fd / 2
         azimuthin = math.asin(wavelength * self.Phase_azimuthin / (2 * math.pi * d)) / math.pi * 180
         elevation = math.asin(wavelength * self.Phase_elevation / (2 * math.pi * d)) / math.pi * 180
         print("velocity:%.2f" % velocity)
