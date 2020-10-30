@@ -3,21 +3,22 @@
 //#include <python.h>
 #include <pigpio.h>
 #define CHANNEL 4
-//#define SAMPLE_RATE 20000
-#define SAMPLE_RATE 1
-//#define DETECT_RATE 1000
-#define DETECT_RATE 1
+#define SAMPLE_RATE 20000
+//#define SAMPLE_RATE 1
+#define DETECT_RATE 1000
+//#define DETECT_RATE 1
 #define SPEED 5000000
 #define SIZE 100
 
-
-int detect(double* data_set, double high_threshold, double low_threshold, int size);
-void sample(int h, int loops, double low_threshold, double* data_set);
 /*
    gcc -pthread -o dataReader dataReader.c -lpigpio
    gcc -shared -Wl,-soname,dataReader -pthread -o dataReader.so -fPIC dataReader.c -lpigpio
    ./dataReader 100000 5000000
 */
+
+int detect(double* data_set, double high_threshold, double low_threshold, int size);
+void sample(int h, int loops, double low_threshold, double* data_set);
+
 
 int main(int argc, char *argv[])
 {
@@ -65,9 +66,10 @@ int detect(double* data_set, double high_threshold, double low_threshold, int si
                 spiXfer(h, buf, buf, 3);
 
                 v = ((buf[1]&3)<<8) | buf[2];
-                printf("Channel %d | %d\n", j, v);
-                if (v>high_threshold)
+//                printf("Channel %d | %d | %f v\n", j, v, (float)v/1023.0*3.3);
+                if (v>high_threshold && (j==0||j==2) || (v+30)>high_threshold && (j==1||j==3))
                 {
+
                     is_threshold_channel++;
                 }
 
@@ -131,9 +133,8 @@ void sample(int h, int loops, double low_threshold, double* data_set)
 
                 v = ((buf[1]&3)<<8) | buf[2];
                 data_set[i*CHANNEL+j] = v;
-                printf("Channel %d | %d\n", j, v);
-
-                if (v<low_threshold)
+//                printf("Channel %d | %d | %f v\n", j, v, (float)v/1023.0*3.3);
+                if (v<low_threshold && (j==0||j==2) || (v+30)<low_threshold && (j==1||j==3))
                 {
                     is_finish_channel++;
                 }

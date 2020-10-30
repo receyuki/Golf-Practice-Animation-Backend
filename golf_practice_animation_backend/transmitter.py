@@ -5,7 +5,8 @@ __copyright__ = 'Copyright 2020, '
 __email__ = 'zijiey@student.unimelb.edu.au'
 
 # import sys
-import dbus, dbus.mainloop.glib
+import dbus
+import dbus.mainloop.glib
 # from gi.repository import GLib
 from advertisement import Advertisement
 from advertisement import register_ad_cb, register_ad_error_cb
@@ -23,6 +24,7 @@ UART_RX_CHARACTERISTIC_UUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e'
 UART_TX_CHARACTERISTIC_UUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e'
 LOCAL_NAME = 'Golf-Practice-Animation'
 mainloop = None
+
 
 class TxCharacteristic(Characteristic):
     def __init__(self, bus, index, service):
@@ -142,7 +144,6 @@ class Transmitter:
         ad_manager.RegisterAdvertisement(adv.get_path(), {},
                                          reply_handler=register_ad_cb,
                                          error_handler=register_ad_error_cb)
-
 
         # GLib.timeout_add(100, self.test)
         #

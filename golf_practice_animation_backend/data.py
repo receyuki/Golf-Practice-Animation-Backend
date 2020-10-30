@@ -66,6 +66,7 @@ class Data:
 
     def compress(self, str):
         return gzip.compress(str.encode())
+        # return str.encode()
 
     def testData(self):
         with open('testData.json') as f:

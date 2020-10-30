@@ -15,7 +15,7 @@ class Trajectory():
         self.azimuthin = azimuthin * math.pi / 180
         self.elevation = elevation * math.pi / 180
 
-    def trajectoryPrediction(self, verticalScale = 1):
+    def trajectoryPrediction(self, verticalScale=1):
         k = 0.5 * 0.5 * 1.293 * math.pi * np.square((0.04267 / 2)) * 0.35
         m = 0.046
         g = 9.8
@@ -60,7 +60,7 @@ class Trajectory():
         for t1 in n1:
             z_1 = -m / k * math.log(math.cos(math.atan(math.sqrt(k / (m * g)) * Vz0)) / (
                 math.cos(math.atan(math.sqrt(k / (m * g)) * Vz0) - t1 * math.sqrt(g * k / m))))
-            z1.append(z_1*verticalScale)
+            z1.append(z_1 * verticalScale)
 
         n2 = np.arange(trise + 0.01, tfly, 0.01)
         z2 = []
@@ -68,7 +68,7 @@ class Trajectory():
         for t2 in n2:
             z_2 = Zmax + m / k * math.log(4 * math.exp(math.sqrt(k * g / m) * (t2 - trise)) / np.square(
                 (1 + math.exp(math.sqrt(k * g / m) * (t2 - trise)))))
-            z2.append(z_2*verticalScale)
+            z2.append(z_2 * verticalScale)
 
         x_mp = 1.0936 * np.array(x)
         y_mp = 1.0936 * np.array(y)

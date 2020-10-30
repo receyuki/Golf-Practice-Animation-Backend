@@ -19,15 +19,19 @@ class ADC:
     def bin2Int(self):
 
         for elem in self.binary_list:
-            self.array1.append(elem[0] / 1024 * 3.3)
-            self.array2.append(elem[1] / 1024 * 3.3)
-            self.array3.append(elem[2] / 1024 * 3.3)
-            self.array4.append(elem[3] / 1024 * 3.3)
+            # self.array1.append(elem[0] / 1024 * 3.3)
+            # self.array2.append(elem[1] / 1024 * 3.3)
+            # self.array3.append(elem[2] / 1024 * 3.3)
+            # self.array4.append(elem[3] / 1024 * 3.3)
+            self.array1.append(elem[0])
+            self.array2.append(elem[1])
+            self.array3.append(elem[2])
+            self.array4.append(elem[3])
 
         print(self.array1)
-        print(self.array2)
-        print(self.array3)
-        print(self.array4)
+        # print(self.array2)
+        # print(self.array3)
+        # print(self.array4)
         # for data1 in self.binary_list1:
         #     self.array1.append(data1/1024*3.3)
         #
@@ -70,8 +74,8 @@ class ADC:
                 self.peak4.append(n)
         count4 = len(self.peak4)
 
-        # fs = 200000
-        fs = 100000000000
+        fs = 20000
+        # fs = 100000000000
         T1 = (self.peak1[1] - self.peak1[0]) * (1 / fs)
         T2 = (self.peak2[1] - self.peak2[0]) * (1 / fs)
         T3 = (self.peak3[1] - self.peak3[0]) * (1 / fs)
@@ -84,7 +88,7 @@ class ADC:
     def initialValue(self):
         c = 3 * 10 ** 8
         d = 0.006
-        ft = 24*10**9
+        ft = 24 * 10 ** 9
         wavelength = c / ft
         velocity = wavelength * self.fd / 2
         azimuthin = math.asin(wavelength * self.Phase_azimuthin / (2 * math.pi * d)) / math.pi * 180
@@ -98,7 +102,6 @@ class ADC:
         self.bin2Int()
         self.phaseDifference()
         return self.initialValue()
-
 
 #
 # test = ADC([b'0000', b'0011', b'0010', b'0100', b'0101', b'0110', b'1000', b'0111'],
