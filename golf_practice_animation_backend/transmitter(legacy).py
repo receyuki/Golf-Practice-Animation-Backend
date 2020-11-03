@@ -4,9 +4,10 @@ __filename__ = 'transmitter.py'
 __copyright__ = 'Copyright 2020, '
 __email__ = 'zijiey@student.unimelb.edu.au'
 
-import bluetooth
-import sys
 import logging
+import sys
+
+import bluetooth
 from sh import bluetoothctl
 
 

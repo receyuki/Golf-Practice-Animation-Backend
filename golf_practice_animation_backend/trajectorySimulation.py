@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Qionghui Cai'
 
-from mpl_toolkits.mplot3d import Axes3D
+import math
+
+# from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import numpy as np
-import math
 
 
 class Trajectory():

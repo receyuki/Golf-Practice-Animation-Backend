@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+//detection mode
 int detect(double* data_set, double high_threshold, double low_threshold, int size)
 {
     int j;
@@ -44,7 +45,6 @@ int detect(double* data_set, double high_threshold, double low_threshold, int si
     int v;
     int is_threshold_channel = 0;
     int is_threshold = 0;
-
     double start, sps;
     unsigned char buf[3];
 
@@ -61,6 +61,7 @@ int detect(double* data_set, double high_threshold, double low_threshold, int si
     printf("Start detecting\n");
     while (1)
     {
+        //detection rate = 1ksps
         if ((time_time() - start) > 1/DETECT_RATE)
         {
             start = time_time();
@@ -68,6 +69,7 @@ int detect(double* data_set, double high_threshold, double low_threshold, int si
             for (j=0; j<CHANNEL; j++)
             {
 
+                //read data from adc
                 buf[0] = 1;
                 buf[1] = (8+j)<<4;
                 buf[2] = 0;
@@ -76,6 +78,7 @@ int detect(double* data_set, double high_threshold, double low_threshold, int si
 
                 v = ((buf[1]&3)<<8) | buf[2];
 //                printf("Channel %d | %d | %f v\n", j, v, (float)v/1023.0*3.3);
+                //check threshold
                 if (v>high_threshold && (j==0||j==2) || (v+30)>high_threshold && (j==1||j==3))
                 {
 
@@ -83,6 +86,7 @@ int detect(double* data_set, double high_threshold, double low_threshold, int si
                 }
 
             }
+            //enter sampling mode
             if (is_threshold_channel>=2 && is_threshold>=5)
             {
                 printf("==========\n");
@@ -110,6 +114,7 @@ int detect(double* data_set, double high_threshold, double low_threshold, int si
     return 1;
 }
 
+//sampling mode
 void sample(int h, int loops, double low_threshold, double* data_set)
 {
     int i;
@@ -124,6 +129,7 @@ void sample(int h, int loops, double low_threshold, double* data_set)
     for (i=0; i<loops; i++)
     {
 
+        //sampling rate = 20ksps
         if ((time_time() - start) < 1/SAMPLE_RATE*i)
         {
             i--;
@@ -134,6 +140,7 @@ void sample(int h, int loops, double low_threshold, double* data_set)
             printf("#%d\n", i);
             for (j=0; j<CHANNEL; j++)
             {
+                //read data from adc
                 buf[0] = 1;
                 buf[1] = (8+j)<<4;
                 buf[2] = 0;
@@ -143,6 +150,7 @@ void sample(int h, int loops, double low_threshold, double* data_set)
                 v = ((buf[1]&3)<<8) | buf[2];
                 data_set[i*CHANNEL+j] = v;
 //                printf("Channel %d | %d | %f v\n", j, v, (float)v/1023.0*3.3);
+                // check threshold
                 if (v<low_threshold && (j==0||j==2) || (v+30)<low_threshold && (j==1||j==3))
                 {
                     is_finish_channel++;

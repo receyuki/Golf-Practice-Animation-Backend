@@ -116,22 +116,24 @@ class UartAdvertisement(Advertisement):
 
 
 class Transmitter:
-    # TODO logger and comments
     def __init__(self, loop):
         global mainloop
         dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
         bus = dbus.SystemBus()
         adapter = self.find_adapter(bus)
+        # check adapter
         if not adapter:
             print('BLE adapter not found')
             return
 
+        # setup dbus
         service_manager = dbus.Interface(
             bus.get_object(BLUEZ_SERVICE_NAME, adapter),
             GATT_MANAGER_IFACE)
         ad_manager = dbus.Interface(bus.get_object(BLUEZ_SERVICE_NAME, adapter),
                                     LE_ADVERTISING_MANAGER_IFACE)
 
+        # setup uart
         app = UartApplication(bus)
         adv = UartAdvertisement(bus, 0)
 
